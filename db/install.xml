@@ -1,0 +1,44 @@
+<?xml version="1.0" encoding="UTF-8" ?>
+<XMLDB PATH="local/block_bulk_setup/db" VERSION="20260815" COMMENT="XMLDB file for local_block_bulk_setup">
+  <TABLES>
+    <TABLE NAME="local_block_bulk_setup_runs" COMMENT="Bulk block placement runs">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="userid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0"/>
+        <FIELD NAME="status" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="draft"/>
+        <FIELD NAME="categoriesjson" TYPE="text" NOTNULL="true"/>
+        <FIELD NAME="courseidsjson" TYPE="text" NOTNULL="true"/>
+        <FIELD NAME="blocknamesjson" TYPE="text" NOTNULL="true"/>
+        <FIELD NAME="region" TYPE="char" LENGTH="100" NOTNULL="true" DEFAULT="side-pre"/>
+        <FIELD NAME="duplicatepolicy" TYPE="char" LENGTH="20" NOTNULL="true" DEFAULT="skip"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0"/>
+        <FIELD NAME="timemodified" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="status_ix" UNIQUE="false" FIELDS="status"/>
+      </INDEXES>
+    </TABLE>
+    <TABLE NAME="local_block_bulk_setup_results" COMMENT="Per-course results for a bulk block placement run">
+      <FIELDS>
+        <FIELD NAME="id" TYPE="int" LENGTH="10" NOTNULL="true" SEQUENCE="true"/>
+        <FIELD NAME="runid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0"/>
+        <FIELD NAME="courseid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0"/>
+        <FIELD NAME="blockname" TYPE="char" LENGTH="100" NOTNULL="true"/>
+        <FIELD NAME="status" TYPE="char" LENGTH="40" NOTNULL="true"/>
+        <FIELD NAME="blockinstanceid" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0"/>
+        <FIELD NAME="message" TYPE="text" NOTNULL="false"/>
+        <FIELD NAME="timecreated" TYPE="int" LENGTH="10" NOTNULL="true" DEFAULT="0"/>
+      </FIELDS>
+      <KEYS>
+        <KEY NAME="primary" TYPE="primary" FIELDS="id"/>
+        <KEY NAME="run_fk" TYPE="foreign" FIELDS="runid" REFTABLE="local_block_bulk_setup_runs" REFFIELDS="id"/>
+      </KEYS>
+      <INDEXES>
+        <INDEX NAME="run_course_block_uix" UNIQUE="true" FIELDS="runid, courseid, blockname"/>
+      </INDEXES>
+    </TABLE>
+  </TABLES>
+</XMLDB>
